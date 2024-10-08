@@ -35,31 +35,27 @@ public class Player : MonoBehaviour
             detectionColor = Color.green;
         }
 
-        List<float> points = new List<float>();
+        float points = 360f / circlePoints;
 
         for (int i = 0; i < circlePoints; i++)
         {
-            points.Add(360f / i);
-
-            // Create the first circle point
-            float firstAngleInRadians = points[0] * Mathf.Deg2Rad;
+            // Iterate through at the current point
+            float firstAngleInRadians = points * i * Mathf.Deg2Rad;
 
             float firstPointX = Mathf.Cos(firstAngleInRadians);
             float firstPointY = Mathf.Sin(firstAngleInRadians);
 
             Vector3 firstPointResultant = new Vector3(firstPointX, firstPointY, 0.0f) * radius;
 
-            // Create the the rest of the circle points
-            float angleInRadians = points[i] * Mathf.Deg2Rad;
+            // Iterate to the next point
+            float angleInRadians = points * (i + 1) * Mathf.Deg2Rad;
 
             float x = Mathf.Cos(angleInRadians);
             float y = Mathf.Sin(angleInRadians);
 
             Vector3 resultant = new Vector3(x, y, 0) * radius;
 
-            Vector3 direction = resultant + (firstPointResultant - resultant);
-
-            Debug.DrawLine(firstPointResultant + resultant, direction, detectionColor);
+            Debug.DrawLine(transform.position + firstPointResultant, transform.position + resultant, detectionColor);
         }
     }
 
