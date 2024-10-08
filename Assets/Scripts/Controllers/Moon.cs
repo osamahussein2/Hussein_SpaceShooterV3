@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Graphs;
 using UnityEngine;
 
 public class Moon : MonoBehaviour
@@ -20,11 +21,22 @@ public class Moon : MonoBehaviour
 
     public void OrbitalMotion(float radius, float speed, Transform target)
     {
-        float rotationAngle = Mathf.Atan2(target.right.y, target.right.x) * Mathf.Rad2Deg;
+        float angleInRadians = Random.Range(0, 360f) * Mathf.Deg2Rad;
 
-        if (Vector2.Distance(transform.position, target.position) <= radius)
+        float x = Mathf.Cos(angleInRadians);
+        float y = Mathf.Sin(angleInRadians);
+
+        transform.position = new Vector3(target.position.x + x, target.position.y + y, 0.0f) * radius;
+
+        float rotationAngle = Mathf.Atan2(target.right.y, target.right.x) * Mathf.Rad2Deg;
+        if (rotationAngle < 360.0f)
         {
-            transform.Rotate(0, 0, rotationAngle * speed * Time.deltaTime);
+            transform.Rotate(0, 0, speed * Time.deltaTime);
+        }
+
+        else
+        {
+            rotationAngle = -360.0f;
         }
     }
 }
