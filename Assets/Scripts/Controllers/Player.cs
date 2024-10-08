@@ -8,17 +8,14 @@ public class Player : MonoBehaviour
     public GameObject bombPrefab;
     public Transform bombsTransform;
     public GameObject powerupPrefab;
-    public Transform powerupTransform;
 
     private Color detectionColor;
-
-    int currentAngleIndex = 0;
 
     // Update is called once per frame
     void Update()
     {
         EnemyRadar(1.5f, 5);
-        SpawnPowerups(2.0f, 6);
+        SpawnPowerups(2.0f, 4);
     }
 
     public void EnemyRadar(float radius, int circlePoints)
@@ -61,26 +58,22 @@ public class Player : MonoBehaviour
 
     public void SpawnPowerups(float radius, int numberOfPowerups)
     {
-        List<float> points = new List<float>();
+        float points = 360f / numberOfPowerups;
 
         for (int i = 0; i < numberOfPowerups; i++)
         {
-            points.Add(360f / i);
+            // Iterate through all the points
+            float angleInRadians = points * i * Mathf.Deg2Rad;
+
+            float x = Mathf.Cos(angleInRadians);
+            float y = Mathf.Sin(angleInRadians);
+
+            Vector3 resultant = new Vector3(x, y, 0) * radius;
+
+            powerupPrefab.transform.position = transform.position + resultant;
+
+            Instantiate(powerupPrefab);
         }
-
-        currentAngleIndex = (currentAngleIndex + 1) % points.Count;
-
-        // Create the the rest of the circle points
-        float angleInRadians = points[currentAngleIndex] * Mathf.Rad2Deg;
-
-        float x = Mathf.Cos(angleInRadians);
-        float y = Mathf.Sin(angleInRadians);
-
-        Vector3 resultant = new Vector3(x, y, 0) * radius;
-
-        powerupPrefab.transform.position = transform.position + resultant;
-
-        Instantiate(powerupPrefab, powerupPrefab.transform);
 
     }
 }
