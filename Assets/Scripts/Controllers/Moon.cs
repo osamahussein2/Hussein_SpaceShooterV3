@@ -26,17 +26,7 @@ public class Moon : MonoBehaviour
         float x = Mathf.Cos(angleInRadians);
         float y = Mathf.Sin(angleInRadians);
 
-        transform.position = new Vector3(target.position.x + x, target.position.y + y, 0.0f) * radius;
-
-        float rotationAngle = Mathf.Atan2(target.right.y, target.right.x) * Mathf.Rad2Deg;
-        if (rotationAngle < 360.0f)
-        {
-            transform.Rotate(0, 0, speed * Time.deltaTime);
-        }
-
-        else
-        {
-            rotationAngle = -360.0f;
-        }
+        transform.position = new Vector3((target.position.x * 1.0f / radius) + x,
+            (target.position.y * 1.0f / radius) + y, 0.0f) * radius;
     }
 }
